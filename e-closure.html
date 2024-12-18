@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Closure Algorithm</title>
+</head>
+
+<body>
+    <h2>E-closure algorithm implementation</h2>
+    <p>Open you web browser console to see output</p>
+
+    <script>
+        // ε-Closure Algorithm in JavaScript
+
+        // Example NFA ε-transitions table
+        const transitions = {
+            0: [1, 2],   // State 0 has ε-transitions to states 1 and 2
+            1: [3],      // State 1 has ε-transition to state 3
+            2: [],       // State 2 has no ε-transitions
+            3: [4],      // State 3 has ε-transition to state 4
+            4: []        // State 4 has no ε-transitions
+        };
+
+        // Function to compute ε-closure of a given state
+        function eClosure(startState, transitions) {
+            const T = new Set();  // Set to store ε-closure states
+            const stack = [];     // Stack for processing states
+
+            // Initialize with the start state
+            T.add(startState);
+            stack.push(startState);
+
+            // Process the stack
+            while (stack.length > 0) {
+                const p = stack.pop(); // Pop state from the stack
+                const R = transitions[p] || []; // Get ε-transitions for the current state
+
+                // For every member of R
+                for (const nextState of R) {
+                    if (!T.has(nextState)) { // If not already in T
+                        T.add(nextState);    // Add to ε-closure set
+                        stack.push(nextState); // Push onto the stack
+                    }
+                }
+            }
+
+            return Array.from(T); // Convert Set to Array for output
+        }
+
+        // Example Usage
+        const startState = 0;
+        const closure = eClosure(startState, transitions);
+        console.log(`ε-closure of state ${startState}:`, closure);
+
+    </script>
+</body>
+
+</html>

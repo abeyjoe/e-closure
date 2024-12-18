@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ε-Closure Example</title>
+</head>
+<body>
+    <h1>Check the Console for ε-Closure Output</h1>
+    
+    <script>
+        // JavaScript Code Here
+        const transitions = {
+            0: { epsilon: [1, 2] },
+            1: { epsilon: [3] },
+            2: { epsilon: [] },
+            3: { epsilon: [4] },
+            4: { epsilon: [] }
+        };
+
+        function epsilonClosure(state, transitions) {
+            const closureSet = new Set();
+            const stack = [];
+
+            closureSet.add(state);
+            stack.push(state);
+
+            while (stack.length > 0) {
+                const currentState = stack.pop();
+                const epsilonTransitions = transitions[currentState]?.epsilon || [];
+
+                for (const nextState of epsilonTransitions) {
+                    if (!closureSet.has(nextState)) {
+                        closureSet.add(nextState);
+                        stack.push(nextState);
+                    }
+                }
+            }
+            return Array.from(closureSet);
+        }
+
+        const startState = 0;
+        const closure = epsilonClosure(startState, transitions);
+        console.log(`ε-closure of state ${startState}:`, closure);
+    </script>
+</body>
+</html>
